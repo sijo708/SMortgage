@@ -31,10 +31,12 @@ function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest 
     // Calculate amortization schedule
     let balance = loanAmount;
     let amortizationSchedule = [];
+    let totalInterest = 0;
 
     for (let month = 1; month <= term; month++) {
         let interest = balance * monthlyRate;
         let principal = monthlyPayment - interest;
+        totalInterest += interest;
         balance -= principal;
 
         amortizationSchedule.push({
@@ -42,7 +44,7 @@ function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest 
             payment: monthlyPayment,
             principal,
             interest,
-            totalInterest: (monthlyPayment * month - loanAmount),
+            totalInterest,
             balance,
         });
     }
