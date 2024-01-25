@@ -22,9 +22,7 @@ function getValues() {
     calculateMortgage(loanAmount, term, interestRate);
 }
 
-function calculateMortgage(loanAmount, term, interestRate) {
-
-    // Monthly interest rate
+function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest rate
     let monthlyRate = interestRate / 100 / 12;
 
     // Monthly payment
@@ -41,11 +39,11 @@ function calculateMortgage(loanAmount, term, interestRate) {
 
         amortizationSchedule.push({
             month,
-            payment: monthlyPayment.toFixed(2),
-            principal: principal.toFixed(2),
-            interest: interest.toFixed(2),
-            totalInterest: (monthlyPayment * month - loanAmount).toFixed(2),
-            balance: balance.toFixed(2),
+            payment: monthlyPayment,
+            principal,
+            interest,
+            totalInterest: (monthlyPayment * month - loanAmount),
+            balance,
         });
     }
 
@@ -73,11 +71,11 @@ function displayResults(amortizationSchedule, monthlyPayment, loanAmount) {
     amortizationSchedule.forEach(entry => {
         let row = document.createElement('tr');
         row.innerHTML = `<td>${entry.month}</td>
-                         <td>${entry.payment}</td>
-                         <td>${entry.principal}</td>
-                         <td>${entry.interest}</td>
-                         <td>${entry.totalInterest}</td>
-                         <td>${entry.balance}</td>`;
+                         <td>$${entry.payment.toFixed(2)}</td>
+                         <td>$${entry.principal.toFixed(2)}</td>
+                         <td>$${entry.interest.toFixed(2)}</td>
+                         <td>$${entry.totalInterest.toFixed(2)}</td>
+                         <td>$${entry.balance.toFixed(2)}</td>`;
 
         tableBody.appendChild(row);
     });
