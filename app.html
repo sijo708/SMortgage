@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Name: A Coding Challenge</title>
+    <title>Letter S Mortgage: A Coding Challenge</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -30,7 +30,7 @@
             <div class="container">
                 <a class="navbar-brand" href="/index.html">
                     <img src="img/S_Logo.png" height="40" />
-                    App Name
+                    Letter S Mortgage
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -68,9 +68,74 @@
     </header>
 
     <main class="container py-3">
-        <h1>App UI goes here!</h1>
-        <input id="message" type="text" placeholder="Enter a Message"/>
-        <button id="btnSubmit" class="btn btn-primary">Display Message</button>        
+
+        <div class="row g-3 mt-3">
+            <!-- Mortgage Calculation Form -->
+            <div class="col-12 col-md-4">
+                <div class="card p-3 h-100 border-3">
+                    <h3 class="text-center display-7 fw-bold">Enter Your Loan Details</h3>
+                    <div class="mt-2">
+                        <form id="mortageCalcForm">
+                            <div class="row row-cols-2 row-cols-md-1 row-cols-lg-2 gy-3">
+                                <div class="col"><label class="form-label" for="loan">Loan Amount ($)</label></div>
+                                <div class="col"><input class="form-control" id="loanAmount" type="number"
+                                        placeholder="Loan Amount" value="" min="0" required></div>
+                                <div class="col"><label class="form-label" for="term">Term (Months)</label></div>
+                                <div class="col"><input class="form-control" id="term" type="number" placeholder="Term"
+                                        value="" min="1" required></div>
+                                <div class="col"><label class="form-label" for="rate">Interest Rate (%)</label></div>
+                                <div class="col"><input class="form-control" id="interestRate"
+                                        placeholder="Interest Rate (%)" value="" min="0" required></div>
+                            </div>
+                            <div class="text-end mt-3">
+                                <button class="btn btn-primary text-nowrap" type="button"
+                                    id="btnSubmit">Calculate</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!--Payment Summary Calcutaed-->
+
+            <div class="col-12 col-md-8">
+                <div class="card p-3 h-100 border-3">
+                    <h3 class="text-center display-7 fw-bold">Your Monthly Payments</h3>
+                    <div id="monthlyPayment" class="text-center m-3 display-6">$0.00</div>
+                    <div class="row row-cols-1 row-cols-sm-2 px-5 gy-2">
+                        <div class="col fw-bold text-center text-md-start">Total Principal</div>
+                        <div id="totPrincipal" class="col text-center text-md-end">$0.00</div>
+                        <div class="col fw-bold text-center text-md-start">Total Interest</div>
+                        <div id="totInterest" class="col text-center text-md-end">$0.00</div>
+                        <div class="col fw-bold text-center text-md-start">Total Cost</div>
+                        <div id="totCost" class="col text-center text-md-end">$0.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amortization Schedule Table -->
+        <div class="card mt-3 border-3 p-3">
+            <div class="table-responsive text-center">
+                <table class="table table-striped border-2">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Month</th>
+                            <th>Payment</th>
+                            <th>Principal</th>
+                            <th>Interest</th>
+                            <th>Total Interest</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="amortizationSchedule">
+                        <!-- Mortgage Amortization Table Rows Go Here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+
     </main>
 
     <footer class="container-fluid py-3">
@@ -110,7 +175,7 @@
 
     <script>
         let button = document.getElementById('btnSubmit');
-        button.addEventListener('click', displayMessage)
+        button.addEventListener('click', getValues)
     </script>
 </body>
 
