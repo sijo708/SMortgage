@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Name: A Coding Challenge</title>
+    <title>Letter S Mortgage: A Coding Challenge</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -33,7 +33,7 @@
             <div class="container">
                 <a class="navbar-brand" href="/index.html">
                     <img src="img/S_Logo.png" height="40" />
-                    App Name
+                    Letter S Mortgage
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -74,21 +74,100 @@
         <h1 class="border-bottom border-dark">The Code</h1>
         <div class="row">
             <!--the JavaScript code-->
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-lg-8">
                 <pre class="line-numbers">
                     <code class="language-js">
-                        function displayMessage(){
-                            let inputBox = document.getElementById('message');
-                            let message = inputBox.value;
+                        function getValues() {
+                            let loanAmount = document.getElementById('loanAmount').value;
+                            let term = document.getElementById('term').value;
+                            let interestRate = document.getElementById('interestRate').value;
                         
-                            Swal.fire(
-                                {
+                            loanAmount = parseFloat(loanAmount);
+                            term = parseFloat(term);
+                            interestRate = parseFloat(interestRate);
+                        
+                            if (isNaN(loanAmount) || isNaN(term) || isNaN(interestRate) ||
+                                loanAmount <= 0 || term <= 0 || interestRate <= 0) {
+                                Swal.fire({
+                                    icon: 'error',
                                     backdrop: false,
-                                    title: 'App Name',
-                                    text: message
-                                }
-                            );
+                                    title: 'Oops',
+                                    text: 'Please enter valid values for Loan Amount, Term, and Interest Rate.'
+                                });
+                        
+                                return;
+                            }
+                        
+                            calculateMortgage(loanAmount, term, interestRate);
                         }
+                        
+                        function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest rate
+                            let monthlyRate = interestRate / 100 / 12;
+                        
+                            // Monthly payment
+                            let monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -term));
+                        
+                            // Calculate payment schedule
+                            let balance = loanAmount;
+                            let paymentSchedule = [];
+                            let totalInterest = 0;
+                        
+                            for (let month = 1; month <= term; month++) {
+                                let interest = balance * monthlyRate;
+                                let principal = monthlyPayment - interest;
+                                totalInterest += interest;
+                                balance -= principal;
+                        
+                                if (balance < 0) balance = 0;
+                        
+                                paymentSchedule.push({
+                                    month,
+                                    payment: monthlyPayment,
+                                    principal,
+                                    interest,
+                                    totalInterest,
+                                    balance,
+                                });
+                            }
+                        
+                            displayResults(paymentSchedule, monthlyPayment, loanAmount);
+                        
+                        }
+                        
+                        function displayResults(paymentSchedule, monthlyPayment, loanAmount) {
+                            // Display monthly payment
+                            document.getElementById('monthlyPayment').innerText = '$' + monthlyPayment.toFixed(2);
+                        
+                            // Display total principal, interest, and cost
+                            let totalPrincipal = loanAmount.toFixed(2);
+                            let totalInterest = (monthlyPayment * paymentSchedule.length - loanAmount).toFixed(2);
+                            let totalCost = (parseFloat(totalPrincipal) + parseFloat(totalInterest)).toFixed(2);
+                        
+                            document.getElementById('totPrincipal').innerText = formatCurrency(totalPrincipal);
+                            document.getElementById('totInterest').innerText = formatCurrency(totalInterest);
+                            document.getElementById('totCost').innerText = formatCurrency(totalCost);
+                        
+                            // Display amortization schedule
+                            let tableBody = document.getElementById('paymentSchedule');
+                            tableBody.innerHTML = '';
+                        
+                            paymentSchedule.forEach(entry => {
+                                let row = document.createElement('tr');
+                                row.innerHTML = `&lt;td>${entry.month}</td>
+                                         &lt;td>${formatCurrency(entry.payment)}</td>
+                                         &lt;td>${formatCurrency(entry.principal)}</td>
+                                         &lt;td>${formatCurrency(entry.interest)}</td>
+                                         &lt;td>${formatCurrency(entry.totalInterest)}</td>
+                                         &lt;td>${formatCurrency(entry.balance)}</td>`;
+                        
+                                tableBody.appendChild(row);
+                            });
+                        }
+                        
+                        function formatCurrency(amount) {
+                            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+                        }
+                        
                     </code>>
                 </pre>
             </div>
