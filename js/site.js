@@ -39,6 +39,8 @@ function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest 
         totalInterest += interest;
         balance -= principal;
 
+        if (balance < 0) balance = 0;
+
         amortizationSchedule.push({
             month,
             payment: monthlyPayment,
@@ -62,9 +64,9 @@ function displayResults(amortizationSchedule, monthlyPayment, loanAmount) {
     let totalInterest = (monthlyPayment * amortizationSchedule.length - loanAmount).toFixed(2);
     let totalCost = (parseFloat(totalPrincipal) + parseFloat(totalInterest)).toFixed(2);
 
-    document.getElementById('totPrincipal').innerText = '$' + totalPrincipal;
-    document.getElementById('totInterest').innerText = '$' + totalInterest;
-    document.getElementById('totCost').innerText = '$' + totalCost;
+    document.getElementById('totPrincipal').innerText = formatCurrency(totalPrincipal);
+    document.getElementById('totInterest').innerText = formatCurrency(totalInterest);
+    document.getElementById('totCost').innerText = formatCurrency(totalCost);
 
     // Display amortization schedule
     let tableBody = document.getElementById('amortizationSchedule');
@@ -73,12 +75,16 @@ function displayResults(amortizationSchedule, monthlyPayment, loanAmount) {
     amortizationSchedule.forEach(entry => {
         let row = document.createElement('tr');
         row.innerHTML = `<td>${entry.month}</td>
-                         <td>$${entry.payment.toFixed(2)}</td>
-                         <td>$${entry.principal.toFixed(2)}</td>
-                         <td>$${entry.interest.toFixed(2)}</td>
-                         <td>$${entry.totalInterest.toFixed(2)}</td>
-                         <td>$${entry.balance.toFixed(2)}</td>`;
+                 <td>${formatCurrency(entry.payment)}</td>
+                 <td>${formatCurrency(entry.principal)}</td>
+                 <td>${formatCurrency(entry.interest)}</td>
+                 <td>${formatCurrency(entry.totalInterest)}</td>
+                 <td>${formatCurrency(entry.balance)}</td>`;
 
         tableBody.appendChild(row);
     });
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 }
