@@ -28,9 +28,9 @@ function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest 
     // Monthly payment
     let monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -term));
 
-    // Calculate amortization schedule
+    // Calculate payment schedule
     let balance = loanAmount;
-    let amortizationSchedule = [];
+    let paymentSchedule = [];
     let totalInterest = 0;
 
     for (let month = 1; month <= term; month++) {
@@ -41,7 +41,7 @@ function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest 
 
         if (balance < 0) balance = 0;
 
-        amortizationSchedule.push({
+        paymentSchedule.push({
             month,
             payment: monthlyPayment,
             principal,
@@ -51,17 +51,17 @@ function calculateMortgage(loanAmount, term, interestRate) {// Monthly interest 
         });
     }
 
-    displayResults(amortizationSchedule, monthlyPayment, loanAmount);
+    displayResults(paymentSchedule, monthlyPayment, loanAmount);
 
 }
 
-function displayResults(amortizationSchedule, monthlyPayment, loanAmount) {
+function displayResults(paymentSchedule, monthlyPayment, loanAmount) {
     // Display monthly payment
     document.getElementById('monthlyPayment').innerText = '$' + monthlyPayment.toFixed(2);
 
     // Display total principal, interest, and cost
     let totalPrincipal = loanAmount.toFixed(2);
-    let totalInterest = (monthlyPayment * amortizationSchedule.length - loanAmount).toFixed(2);
+    let totalInterest = (monthlyPayment * paymentSchedule.length - loanAmount).toFixed(2);
     let totalCost = (parseFloat(totalPrincipal) + parseFloat(totalInterest)).toFixed(2);
 
     document.getElementById('totPrincipal').innerText = formatCurrency(totalPrincipal);
@@ -69,10 +69,10 @@ function displayResults(amortizationSchedule, monthlyPayment, loanAmount) {
     document.getElementById('totCost').innerText = formatCurrency(totalCost);
 
     // Display amortization schedule
-    let tableBody = document.getElementById('amortizationSchedule');
+    let tableBody = document.getElementById('paymentSchedule');
     tableBody.innerHTML = '';
 
-    amortizationSchedule.forEach(entry => {
+    paymentSchedule.forEach(entry => {
         let row = document.createElement('tr');
         row.innerHTML = `<td>${entry.month}</td>
                  <td>${formatCurrency(entry.payment)}</td>
