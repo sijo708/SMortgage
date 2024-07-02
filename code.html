@@ -60,7 +60,7 @@
                         </li>
                         <li class="nav-item">
                             <!--Change Me-->
-                            <a class="nav-link" href="#">Blog</a>
+                            <a class="nav-link" href="https://myblog-production-9fdb.up.railway.app/">Blog</a>
                         </li>
 
                     </ul>
@@ -168,20 +168,48 @@
                             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
                         }
                         
-                    </code>>
+                    </code>
                 </pre>
             </div>
 
             <!-- The code's explanation -->
             <div class="col-12 col-lg-4">
-                <p>The code is structured in 4 functions</p>
-                <h5><code>displayMessage()</code></h5>
+                <p>The code is structured in 4 functions:</p>
+                
+                <h5><code>getValues()</code></h5>
                 <p>
-                    The <code>displayMessage</code> function gets the 
-                    text from the input element and displays it in a 
-                    Sweet Alert popup.
+                    The <code>getValues</code> function retrieves the loan amount, term, and interest rate input values from the document. 
+                    It parses these values to floats and validates them to ensure they are numbers and greater than zero. 
+                    If the values are invalid, it displays an error message using SweetAlert. 
+                    Otherwise, it calls the <code>calculateMortgage</code> function with the parsed values to perform the mortgage calculation.
+                </p>
+                
+                <h5><code>calculateMortgage()</code></h5>
+                <p>
+                    The <code>calculateMortgage</code> function takes the loan amount, term, and interest rate as parameters. 
+                    It calculates the monthly interest rate and the monthly payment amount using the provided formula. 
+                    It then iterates over each month to calculate the interest, principal, and remaining balance, accumulating the total interest paid. 
+                    The payment details for each month are stored in an array called <code>paymentSchedule</code>. 
+                    Finally, it calls the <code>displayResults</code> function to show the results on the web page.
+                </p>
+                
+                <h5><code>displayResults()</code></h5>
+                <p>
+                    The <code>displayResults</code> function receives the payment schedule, monthly payment, and loan amount. 
+                    It updates the HTML to display the monthly payment, total principal, total interest, and total cost. 
+                    It also generates an amortization schedule by creating table rows for each entry in the payment schedule array. 
+                    Each row displays the month, payment, principal, interest, total interest, and balance. 
+                    This function ensures that the calculated mortgage details are presented to the user in a readable format.
+                </p>
+                
+                <h5><code>formatCurrency()</code></h5>
+                <p>
+                    The <code>formatCurrency</code> function takes a numeric amount and formats it as a currency string in USD. 
+                    It uses the <code>Intl.NumberFormat</code> object to format the number according to the en-US locale and USD currency style. 
+                    This function is used to ensure that all monetary values displayed on the web page are formatted consistently and clearly.
                 </p>
             </div>
+            
         </div>
     </main>
 
